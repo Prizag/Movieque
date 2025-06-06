@@ -1,8 +1,12 @@
 import pickle
 import streamlit as st
 import requests
-
 import time
+import gdown
+import os
+
+file_id = '15781I4uyMxAx4O-3MQBwUI0L3DSuatJH'
+url = f'https://drive.google.com/uc?export=download&id={file_id}'
 
 
 def fetch_poster(movie_id, retries=3):
@@ -42,7 +46,19 @@ def recommend(movie):
 
 st.header('Movie Recommender System')
 movies = pickle.load(open('movies.pkl','rb'))
-similarity = pickle.load(open('similarity.pkl','rb'))
+
+
+
+file_id = '15781I4uyMxAx4O-3MQBwUI0L3DSuatJH'
+file_path = 'similarity.pkl'
+
+if not os.path.exists(file_path):
+    gdown.download(f"https://drive.google.com/uc?id={file_id}", file_path, quiet=False)
+
+
+
+with open('similarity.pkl', 'rb') as f:
+    similarity = pickle.load(f)
 
 movie_list = movies['title'].values
 selected_movie = st.selectbox(
